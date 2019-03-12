@@ -13,6 +13,7 @@ const modules = require('./modules')
 const port = process.env.PORT || 5000;
 const server = new ApolloServer({
   modules,
+  introspection: true,
   context: ({ req }) => {
     const token = req.headers.authorization || null;
     return { token };
