@@ -1,20 +1,30 @@
 const express = require('express');
+const { ApolloServer } = require('apollo-server-express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const methodOverride = require('method-override');
 const logger = require('morgan');
 const cors = require('cors');
 
-// const errorHandlers = require('./middleware/errorHandlers');
-
+// eslint-disable-next-line no-unused-vars
+const mongoose = require('./db');
+const modules = require('./modules')
 
 const port = process.env.PORT || 5000;
-// const db = require('./database');
+const server = new ApolloServer({
+  modules,
+  context: ({ req }) => {
+    const token = req.headers.authorization || null;
+    return { token };
+  },
+  formatError: error => {
+    console.log(error);
+    delete error.extensions.exception;
+    return error;
+  },
+});
+
 const app = express();
-
-console.log(process.env.NODE_ENV)
-console.log(app.get('env'))
-
 app.use(cors());
 app.use(logger('dev'));
 app.use(methodOverride());
@@ -23,11 +33,33 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer().any());
 
-app.get('/', (req, res) => res.send('gql server'));
+server.applyMiddleware({ app });
 
-// app.use('/api/articles', article);
-// app.use(errorHandlers.logErrors);
-// app.use(errorHandlers.clientErrorHandler);
-// app.use(errorHandlers.errorHandler);
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}${server.graphqlPath}`);
+});
 
-app.listen(port, () => console.log(`http://localhost:${port}`));
+
+// const express = require('express');
+// const graphqlHTTP = require('express-graphql');
+
+
+
+
+
+
+// console.log(process.env.NODE_ENV)
+// console.log(app.get('env'))
+
+
+
+
+// app.get('/', (req, res) => res.send('gql server'));
+// app.use('/graphql', graphqlHTTP({
+//   schema,
+//   graphiql: true,
+// }));
+
+// // app.use('/api/articles', article);
+
+// app.listen(port, () => console.log(`http://localhost:${port}`));
