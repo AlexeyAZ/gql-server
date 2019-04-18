@@ -1,3 +1,4 @@
+const moment = require('moment');
 const Post = require('./post.model.js');
 const User = require('../user/user.model');
 
@@ -6,11 +7,12 @@ const resolvers = {
     getAllPosts: () => Post.find({}),
   },
   Mutation: {
-    addPost: (parent, post) => {
-      return User.findById(post.userId).exec()
+    createPost: (parent, {title, content, userId}) => {
+      const createdAt = String(+moment())
+      return User.findById(userId).exec()
         .then(author => {
           // TODO add error handlers
-          const newPost = new Post({ title: post.title, content: post.content, author })
+          const newPost = new Post({ title: title, content: content, createdAt, author })
           newPost.save()
           return newPost
         })

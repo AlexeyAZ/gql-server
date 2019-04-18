@@ -1,15 +1,16 @@
 const typeDefs = `
   type Post {
-    _id: ID,
+    _id: String,
     title: String,
     content: String,
+    createdAt: String,
     author: User,
   },
   extend type Query {
     getAllPosts: [Post]
   },
   extend type Mutation {
-    addPost(title: String!, content: String!, userId: ID!): Post,
+    createPost(title: String!, content: String!, userId: String!): Post,
   }
 `;
 

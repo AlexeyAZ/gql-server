@@ -1,23 +1,22 @@
 const typeDefs = `
   type User {
-    _id: ID,
+    _id: String,
+    nickName: String,
     firstName: String,
     lastName: String,
     password: String,
     email: String,
     token: String,
+    role: String,
   },
   extend type Query {
-    getAllUsers: [User]
-  },
-  extend type Query {
-    getUser(_id: ID!, firstName: String, lastName: String, password: String, email: String): User
-  },
-  extend type Query {
-    loginUser(email: String!, password: String!, firstName: String, _id: ID): User
+    getAllUsers(_id: String): [User]
+    getAllUserPosts(_id: String!): [Post]
+    getUser(_id: String!): User
+    loginUser(email: String!, password: String!): User
   },
   extend type Mutation {
-    createUser(firstName: String!, lastName: String, password: String, email: String!): User,
+    createUser(nickName: String, firstName: String, lastName: String, password: String!, email: String!): User,
   }
 `;
 

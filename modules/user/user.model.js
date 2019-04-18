@@ -5,12 +5,20 @@ const jwt = require('jsonwebtoken');
 const config = require('../../config');
 
 const userSchema = new Schema({
-  firstName: String,
+  nickName: {
+    type: String,
+    unique: true
+  },
+  firstName: { type: String },
   lastName: { type: String },
-  password: { type: String },
+  password: { type: String, required: true },
   email: {
     type: String,
-    // unique: true
+    unique: true,
+    required: true,
+  },
+  role: {
+    type: String,
   },
 });
 
@@ -30,7 +38,7 @@ userSchema.methods = {
   },
   createToken() {
     const jwtOptions = {
-      expiresIn: '2h'
+      expiresIn: '2h'// '5120'
     };
     return jwt.sign(
       {
