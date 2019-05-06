@@ -4,7 +4,7 @@ const typeDefs = `
     title: String,
     content: String,
     createdAt: String,
-    author: User,
+    author: String,
   },
   extend type Query {
     getAllPosts: [Post]

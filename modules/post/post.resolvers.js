@@ -9,12 +9,21 @@ const resolvers = {
   Mutation: {
     createPost: (parent, {title, content, userId}) => {
       const createdAt = String(+moment())
-      return User.findById(userId).exec()
+      return User.findById(userId)
+        .exec()
         .then(author => {
+          console.log('author', author)
           // TODO add error handlers
-          const newPost = new Post({ title: title, content: content, createdAt, author })
-          newPost.save()
-          return newPost
+          const newPost = new Post({ title: title, content: content, createdAt, author: author._id })
+          return newPost.save()
+            .then(post => {
+              author.posts.push(post)
+              return author.save()
+                .then(result => {
+                  console.log('result', result)
+                  return post
+                })
+            })
         })
     }
   }

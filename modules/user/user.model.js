@@ -20,6 +20,7 @@ const userSchema = new Schema({
   role: {
     type: String,
   },
+  posts: [{type: Schema.Types.ObjectId, ref: 'post'}]
 });
 
 userSchema.pre('save', function (next) {

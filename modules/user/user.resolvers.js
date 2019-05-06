@@ -8,22 +8,26 @@ const resolvers = {
     getAllUsers: (parent, { _id }, context) => {
       return verify(context.token, success => {
         return User.find({})
+          .populate('posts')
+          .exec()
+          .then(posts => posts)
       })
     },
     getAllUserPosts: (parent, { _id }) => {
-      return Post.find({author: _id})
+      return Post.find({authorId: _id})
         .exec()
         .then(data => data)
     },
     getUser: (parent, { _id }, context) => {
       return verify(context.token, success => {
-        return User.findById(_id).exec()
+        return User.findById(_id)
+          .populate('posts')
+          .exec()
           .then(result => result)
           .catch(error => console.log(error))
       })
     },
     loginUser: (parent, user, context) => {
-      console.log(user)
       return User.findOne({ email: user.email })
         .exec()
         .then(findUser => {
@@ -42,6 +46,7 @@ const resolvers = {
         password: user.password,
         email: user.email,
         role: 'User',
+        posts: [],
       })
         // TODO add error handlers
         .then(user => {
