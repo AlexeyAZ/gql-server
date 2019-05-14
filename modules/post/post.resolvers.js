@@ -12,19 +12,23 @@ const resolvers = {
       return User.findById(userId)
         .exec()
         .then(author => {
-          console.log('author', author)
           // TODO add error handlers
-          const newPost = new Post({ title: title, content: content, createdAt, author: author._id })
+          const newPost = new Post({ title: title, content: content, createdAt, updatedAt: createdAt, author: author._id })
           return newPost.save()
             .then(post => {
               author.posts.push(post)
               return author.save()
-                .then(result => {
-                  console.log('result', result)
+                .then(() => {
                   return post
                 })
             })
         })
+    },
+    updatePost: (parent, {title, content, postId}) => {
+      const updatedAt = String(+moment())
+      return Post.findByIdAndUpdate(postId, {title, content, updatedAt}, {new: true})
+        .exec()
+        .then(post => post)
     }
   }
 };

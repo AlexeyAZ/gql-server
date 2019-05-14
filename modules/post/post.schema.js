@@ -4,6 +4,7 @@ const typeDefs = `
     title: String,
     content: String,
     createdAt: String,
+    updatedAt: String,
     author: String,
   },
   extend type Query {
@@ -11,6 +12,7 @@ const typeDefs = `
   },
   extend type Mutation {
     createPost(title: String!, content: String!, userId: String!): Post,
+    updatePost(title: String, content: String, postId: String!): Post,
   }
 `;
 
