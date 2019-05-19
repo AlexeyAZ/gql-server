@@ -13,6 +13,7 @@ const typeDefs = `
   extend type Mutation {
     createPost(title: String!, content: String!, userId: String!): Post,
     updatePost(title: String, content: String, postId: String!): Post,
+    deletePost(id: String!): Post,
   }
 `;
 

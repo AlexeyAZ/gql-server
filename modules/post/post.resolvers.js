@@ -24,9 +24,14 @@ const resolvers = {
             })
         })
     },
-    updatePost: (parent, {title, content, postId}) => {
+    updatePost: (parent, { title, content, postId }) => {
       const updatedAt = String(+moment())
       return Post.findByIdAndUpdate(postId, {title, content, updatedAt}, {new: true})
+        .exec()
+        .then(post => post)
+    },
+    deletePost: (parent, { id }) => {
+      return Post.findByIdAndDelete(id)
         .exec()
         .then(post => post)
     }
