@@ -30,6 +30,34 @@ const resolvers = {
         .exec()
         .then(post => post)
     },
+    updatePosts: (parent, data) => {
+      const array = data.posts.map(item => {
+        const { noteId } = item
+        const obj = {}
+
+        Object.keys(item).forEach(element => {
+          if (element === 'localUpdatedAt' && obj[element]) {
+            obj.updatedAt = obj[element]
+            return
+          }
+          if (item[element]) obj[element] = item[element]
+        })
+
+        return {
+          updateOne: {
+            filter: { _id: noteId },
+            update: { ...obj },
+          }
+        }
+      })
+
+      return Post.bulkWrite(array)
+        .then(res =>
+          User.findById(data.userId)
+            .populate('posts')
+            .exec()
+            .then(p => p.posts))
+    },
     deletePost: (parent, { id }) => {
       return Post.findByIdAndDelete(id)
         .exec()

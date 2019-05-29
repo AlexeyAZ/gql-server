@@ -10,7 +10,6 @@ var cookieParser = require('cookie-parser');
 // eslint-disable-next-line no-unused-vars
 const mongoose = require('./db');
 const modules = require('./modules')
-console.log(modules)
 
 const port = process.env.PORT || 5000;
 const server = new ApolloServer({
@@ -18,12 +17,10 @@ const server = new ApolloServer({
   introspection: true,
   playground: true,
   context: ({ req }) => {
-    console.log(req.cookies)
     const token = req.headers.authorization || null;
     return { token };
   },
   formatError: error => {
-    console.log(error);
     delete error.extensions.exception;
     return error;
   },
@@ -31,7 +28,7 @@ const server = new ApolloServer({
 
 const app = express();
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://localhost:3000', 'http://192.168.0.74:3000'],
+  origin: ['http://localhost:3000', 'https://localhost:3000', 'http://192.168.0.74:3000, https://192.168.1.84:3000'],
   credentials: true,
 }));
 app.use(logger('dev'));
