@@ -5,7 +5,6 @@ const isPlainObject = require('lodash/isPlainObject');
 const config = require('../config');
 
 const verify = (token, success) => jwt.verify(token, config.jwt.secret, (err, decoded) => {
-  console.log(token)
   if (err) {
     console.log(err)
     throw new AuthenticationError('Authentication error');

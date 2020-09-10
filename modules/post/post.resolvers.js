@@ -1,6 +1,9 @@
+const _ = require('lodash');
 const moment = require('moment');
 const Post = require('./post.model.js');
 const User = require('../user/user.model');
+
+const { pickBy, isNull, isUndefined } = _
 
 const resolvers = {
   Query: {
@@ -24,9 +27,10 @@ const resolvers = {
             })
         })
     },
-    updatePost: (parent, { title, content, postId }) => {
+    updatePost: (parent, { title, content, postId, localUpdatedAt }) => {
       const updatedAt = String(+moment())
-      return Post.findByIdAndUpdate(postId, {title, content, updatedAt}, {new: true})
+      const updatedPost = pickBy({ title, content }, el => !isNull(el) && !isUndefined(el))
+      return Post.findByIdAndUpdate(postId, { ...updatedPost, updatedAt }, {new: true})
         .exec()
         .then(post => post)
     },

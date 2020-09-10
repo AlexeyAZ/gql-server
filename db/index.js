@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const config = require('../config');
 
 mongoose.connect(config.db.url, { useNewUrlParser: true });
-mongoose.set('debug', true);
+// mongoose.set('debug', true);
 mongoose.set('useCreateIndex', true);
 
 // eslint-disable-next-line no-console

@@ -21,7 +21,7 @@ const typeDefs = `
   },
   extend type Mutation {
     createPost(title: String!, content: String!, userId: String!): Post,
-    updatePost(title: String, content: String, postId: String!): Post,
+    updatePost(title: String, content: String, postId: String!, localUpdatedAt: String!): Post,
     updatePosts(userId: String!, posts: [MainPost]!): [Post],
     deletePost(id: String!): Post,
   }
